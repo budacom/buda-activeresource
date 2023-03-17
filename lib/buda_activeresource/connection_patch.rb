@@ -1,5 +1,5 @@
-module BudaActiveResource
-  module ConnectionExtensions
+class BudaActiveResource
+  module ConnectionPatch
     def set_secret(secret)
       @secret = secret
     end
@@ -12,11 +12,13 @@ module BudaActiveResource
           configure_http(http)
           request = Net::HTTP::const_get(method.capitalize).new path
           headers = arguments.last
+
           headers.each do |key, value|
             request[key] = value
           end
+
           request.body = arguments.first if arguments.length > 1
-          Authograph.signer.sign(request, @secret) if !@secret.nil?
+          Authograph.signer.sign(request, @secret) unless @secret.nil?
           payload[:result] = http.request(request)
         end
       end
