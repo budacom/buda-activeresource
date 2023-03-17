@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activeadmin'
   spec.add_dependency 'activeresource'
   spec.add_dependency 'authograph'
+  spec.add_dependency 'enumerize'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rspec'
 end
