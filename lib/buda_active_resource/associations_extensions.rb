@@ -1,3 +1,5 @@
+require 'activeresource'
+
 module BudaActiveResource
   class AssociationsExtensions
     def self.scope(name, body)

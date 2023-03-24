@@ -1,4 +1,4 @@
-require 'configuration'
+require_relative 'configuration'
 
 module BudaActiveResource
   def self.config

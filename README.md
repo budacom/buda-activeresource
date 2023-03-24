@@ -1,9 +1,9 @@
 # Buda Active Resource
 
-Add customizations to active resource objects to work prioperly in buda.com arquitecure.
+Add customizations to [ActiveResource](https://github.com/rails/activeresource) objects to work properly in Buda.com arquitecure.
 
 Features include:
-- Integration with `Enumerize`
+- Integration with [Enumerize](https://github.com/brainspec/enumerize)
 - Integration with `Money`
 - Connectiones patch
 - other minor tweaks

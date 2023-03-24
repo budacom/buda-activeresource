@@ -1,13 +1,14 @@
-require_relative "./json_formatter"
+require_relative "json_formatter"
+require 'activeresource'
 
 module BudaActiveResource
   class ConnectionExtensions
-    include JsonFormatter
+    # include JsonFormatter
 
-    self.format = JsonFormatter.new(collection_name)
+    # self.format = JsonFormatter.new(collection_name)
 
     cattr_accessor :static_headers
-    self.static_headers = headers
+    # self.static_headers = headers
 
     # --
     def self.headers

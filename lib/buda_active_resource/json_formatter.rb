@@ -1,8 +1,7 @@
 class JsonFormatter
   include ActiveResource::Formats::JsonFormat
 
-  attr_reader :collection_name
-  attr_reader :pagination_info
+  attr_reader :collection_name, :pagination_info
 
   def initialize(collection_name)
     @collection_name = collection_name.to_s

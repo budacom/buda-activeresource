@@ -1,5 +1,5 @@
 module BudaActiveResource
-  class ConnectionPatch
+  module ConnectionPatch
     def set_secret(secret)
       @secret = secret
     end
