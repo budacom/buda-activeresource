@@ -1,7 +1,7 @@
 require 'enumerize'
 
-class BudaActiveResource
-  module EnumerizeExtensions
+module BudaActiveResource
+  class EnumerizeExtensions
     # Enumerize support
     extend Enumerize if defined? Enumerize
 

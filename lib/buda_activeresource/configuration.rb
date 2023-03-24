@@ -5,19 +5,19 @@ class Configuration
 
   FIND_PER_PAGE = 300
 
-  # def self.agent_id
-  #   ENV['RESOURCES_API_AGENT_ID']
-  # end
+  def self.agent_id
+    ENV['RESOURCES_API_AGENT_ID']
+  end
 
-  # def self.secret
-  #   ENV['RESOURCES_API_AGENT_SECRET']
-  # end
+  def self.secret
+    ENV['RESOURCES_API_AGENT_SECRET']
+  end
 
-  # def self.agent_id
-  #   ENV['PATABIT_AGENT_ID']
-  # end
+  def self.agent_id
+    ENV['PATABIT_AGENT_ID']
+  end
 
-  # def self.secret
-  #   ENV['PATABIT_AGENT_SECRET']
-  # end
+  def self.secret
+    ENV['PATABIT_AGENT_SECRET']
+  end
 end

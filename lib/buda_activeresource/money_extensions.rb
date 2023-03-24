@@ -1,5 +1,5 @@
 module BudaActiveResource
-  module MoneyExtensions
+  class MoneyExtensions
     # RailsMoney support
     def self.monetize(*fields)
       options = fields.extract_options!

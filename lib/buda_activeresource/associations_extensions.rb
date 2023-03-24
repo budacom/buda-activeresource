@@ -1,5 +1,5 @@
-class BudaActiveResource
-  module AssociationsExtensions
+module BudaActiveResource
+  class AssociationsExtensions
     def self.scope(name, body)
       singleton_class.send(:define_method, name, &body)
       ActiveResource::Collection.send(:define_method, name, &body)

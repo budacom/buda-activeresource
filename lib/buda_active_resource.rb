@@ -1,0 +1,7 @@
+require_relative 'buda_activeresource/base'
+require_relative 'buda_activeresource/buda_activeresource'
+require_relative 'buda_activeresource/money_extensions'
+require_relative 'buda_activeresource/enumerize_extensions'
+require_relative 'buda_activeresource/connection_extensions'
+require_relative 'buda_activeresource/connection_patch'
+require_relative 'buda_activeresource/configuration'

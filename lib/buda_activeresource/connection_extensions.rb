@@ -1,7 +1,7 @@
 require_relative "./json_formatter"
 
-class BudaActiveResource
-  module ConnectionExtensions
+module BudaActiveResource
+  class ConnectionExtensions
     include JsonFormatter
 
     self.format = JsonFormatter.new(collection_name)
