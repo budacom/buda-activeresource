@@ -3,7 +3,7 @@ module BudaActiveResource
     # Enumerize support
     extend Enumerize if defined? Enumerize
 
-    def self.enumerize(name, options = {})
+    def enumerize(name, options = {})
       # Getter
       define_method name do
         enumerize_attr = self.class.send(name)

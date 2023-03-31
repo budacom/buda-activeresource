@@ -1,13 +1,18 @@
 require 'activeresource'
+require_relative 'associations_extensions'
 require_relative 'enumerize_extensions'
 require_relative 'money_extensions'
 require_relative 'connection_patch'
+require_relative 'configuration'
 
 module BudaActiveResource
   class Base < ActiveResource::Base
-    include EnumerizeExtensions
-    include MoneyExtensions
-    include ConnectionPatch # source: app/lib/active_admin_resource/connection_extensions.rb
+    extend AssociationsExtensions
+    extend Enumerize if defined? Enumerize
+    extend EnumerizeExtensions
+    extend MoneyExtensions
+    # include ConnectionPatch # pending: import as rail tie ?? # source: app/lib/active_admin_resource/connection_extensions.rb
+    extend Configuration
 
     def created_at
       Time.parse(attributes[:created_at].to_s).in_time_zone if attributes[:created_at].present?
@@ -31,7 +36,7 @@ module BudaActiveResource
     end
 
     def self.inherited(model)
-      model.site = API_BASE_URL
+      model.site = api_base_url
       super
     end
 

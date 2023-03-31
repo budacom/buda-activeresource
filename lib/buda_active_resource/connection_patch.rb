@@ -1,5 +1,7 @@
 module BudaActiveResource
   module ConnectionPatch
+    # orginal source: app/lib/active_admin_resource/connection_extensions.rb
+
     def set_secret(secret)
       @secret = secret
     end

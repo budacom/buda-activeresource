@@ -138,11 +138,6 @@ Layout/MultilineOperationIndentation:
 Style/MutableConstant:
   Description: Do not assign mutable objects to constants.
   Enabled: false
-Style/NumericLiterals:
-  Description: Add underscores to large numeric literals to improve their readability.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#underscores-in-numerics
-  Enabled: false
-  MinDigits: 5
 Style/PercentLiteralDelimiters:
   Description: Use `%`-literal delimiters consistently
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-literal-braces

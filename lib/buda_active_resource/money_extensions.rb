@@ -1,12 +1,12 @@
 module BudaActiveResource
   module MoneyExtensions
     # RailsMoney support
-    def self.monetize(*fields)
+    def monetize(*fields)
       options = fields.extract_options!
       fields.each { |field| monetize_field(field, options) }
     end
 
-    def self.monetize_field(field, _options = {})
+    def monetize_field(field, _options = {})
       # Getter
       define_method field do
         amount, currency = attributes[field.to_sym]

@@ -1,13 +1,13 @@
 require 'activeresource'
 
 module BudaActiveResource
-  class AssociationsExtensions
-    def self.scope(name, body)
+  module AssociationsExtensions
+    def scope(name, body)
       singleton_class.send(:define_method, name, &body)
       ActiveResource::Collection.send(:define_method, name, &body)
     end
 
-    def self.has_many(plural_model_name, options = {})
+    def has_many(plural_model_name, options = {})
       klass = Object.const_get plural_model_name.to_s.singularize.classify
       # Getter
       define_method plural_model_name do
@@ -32,7 +32,7 @@ module BudaActiveResource
       end
     end
 
-    def self.has_one(model_name)
+    def has_one(model_name)
       klass = Object.const_get model_name.to_s.classify
       # Getter
       define_method model_name do
