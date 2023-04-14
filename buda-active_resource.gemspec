@@ -1,5 +1,5 @@
 Gem::Specification.new do |spec|
-  spec.name        = 'buda_active_resource'
+  spec.name        = 'buda-activeresource'
   spec.version     = '1.0.0'
   spec.date        = '2023-03-03'
   spec.summary     = 'pending'
