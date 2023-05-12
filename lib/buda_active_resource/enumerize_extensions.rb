@@ -1,8 +1,5 @@
 module BudaActiveResource
   module EnumerizeExtensions
-    # Enumerize support
-    extend Enumerize if defined? Enumerize
-
     def enumerize(name, options = {})
       # Getter
       define_method name do

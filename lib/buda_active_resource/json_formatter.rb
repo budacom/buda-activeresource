@@ -1,27 +1,29 @@
-class JsonFormatter
-  include ActiveResource::Formats::JsonFormat
+module BudaActiveResource
+  class JsonFormatter
+    include ActiveResource::Formats::JsonFormat
 
-  attr_reader :collection_name, :pagination_info
+    attr_reader :collection_name, :pagination_info
 
-  def initialize(collection_name)
-    @collection_name = collection_name.to_s
-  end
+    def initialize(collection_name)
+      @collection_name = collection_name.to_s
+    end
 
-  def decode(json)
-    pre_process(ActiveSupport::JSON.decode(json))
-  end
+    def decode(json)
+      pre_process(ActiveSupport::JSON.decode(json))
+    end
 
-  private
+    private
 
-  def pre_process(data)
-    @pagination_info = data['meta']
-    data.delete('meta')
-    if data.is_a?(Hash) && data.keys.size == 1 && data.values.first.is_a?(Enumerable)
-      data.values.first
-    elsif data.is_a?(Array) && data.size == 1
-      data.first
-    else
-      data
+    def pre_process(data)
+      @pagination_info = data['meta']
+      data.delete('meta')
+      if data.is_a?(Hash) && data.keys.size == 1 && data.values.first.is_a?(Enumerable)
+        data.values.first
+      elsif data.is_a?(Array) && data.size == 1
+        data.first
+      else
+        data
+      end
     end
   end
 end

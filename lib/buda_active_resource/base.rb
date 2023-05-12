@@ -1,18 +1,27 @@
-require 'activeresource'
+require 'enumerize'
+require_relative 'json_formatter'
 require_relative 'associations_extensions'
 require_relative 'enumerize_extensions'
 require_relative 'money_extensions'
-require_relative 'connection_patch'
+require_relative 'connection_extensions'
 require_relative 'configuration'
 
 module BudaActiveResource
   class Base < ActiveResource::Base
     extend AssociationsExtensions
-    extend Enumerize if defined? Enumerize
-    extend EnumerizeExtensions
+
+    if defined? Enumerize
+      extend Enumerize
+      extend EnumerizeExtensions
+    end
+
     extend MoneyExtensions
-    # include ConnectionPatch # pending: import as rail tie ?? # source: app/lib/active_admin_resource/connection_extensions.rb
-    extend Configuration
+
+    cattr_accessor :static_headers
+    self.static_headers = headers
+    include ConnectionExtensions
+
+    self.format = JsonFormatter.new(collection_name)
 
     def created_at
       Time.parse(attributes[:created_at].to_s).in_time_zone if attributes[:created_at].present?
@@ -22,7 +31,6 @@ module BudaActiveResource
       Time.parse(attributes[:updated_at].to_s).in_time_zone if attributes[:updated_at].present?
     end
 
-    # lo usa la gema de IA
     def to_global_id
       URI::GID.build(['patabit', model_name.name, id, {}])
     end
