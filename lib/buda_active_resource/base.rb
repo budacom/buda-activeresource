@@ -1,27 +1,47 @@
-require 'enumerize'
-require_relative 'json_formatter'
-require_relative 'associations_extensions'
-require_relative 'enumerize_extensions'
-require_relative 'money_extensions'
-require_relative 'connection_extensions'
-require_relative 'configuration'
-
 module BudaActiveResource
   class Base < ActiveResource::Base
-    extend AssociationsExtensions
+    class << self
+      threadsafe_attribute :_buda_site, :_agent_id, :_agent_secret
 
-    if defined? Enumerize
-      extend Enumerize
-      extend EnumerizeExtensions
+      def connection(_refresh = false)
+        return superclass.connection if !_buda_site_defined?
+
+        self._connection = nil if _refresh
+        self._connection ||= BudaActiveResource::Connection.new(
+          site: _buda_site,
+          agent_id: _agent_id,
+          agent_secret: _agent_secret
+        )
+      end
+
+      def site=(_value)
+        self._buda_site = URI.parse(_value)
+        self._connection = nil
+      end
+
+      def agent_id=(_value)
+        self._agent_id = _value
+        self._connection = nil
+      end
+
+      def agent_secret=(_value)
+        self._agent_secret = _value
+        self._connection = nil
+      end
+
+      def site
+        return _buda_site if _buda_site_defined?
+
+        superclass.site
+      end
     end
 
-    extend MoneyExtensions
-
-    cattr_accessor :static_headers
-    self.static_headers = headers
-    include ConnectionExtensions
-
     self.format = JsonFormatter.new(collection_name)
+
+    include Extensions::Associations
+    include Extensions::ActiveAdminResource
+    include Extensions::Money
+    include Extensions::Enumerize
 
     def created_at
       Time.parse(attributes[:created_at].to_s).in_time_zone if attributes[:created_at].present?
@@ -39,38 +59,8 @@ module BudaActiveResource
       base_class.name
     end
 
-    def self.confirmed
-      where(state: 'confirmed')
-    end
-
-    def self.inherited(model)
-      model.site = api_base_url
-      super
-    end
-
     def self.find_by(arg, *_args)
       find(arg[primary_key])
-    end
-
-    Enumerable.send(:define_method, 'and_preload') do |model_to_load|
-      model_to_load = model_to_load.to_s.singularize
-      klass_to_load = Object.const_get model_to_load.classify
-      foreign_ids = map { |collection_item| collection_item.send("#{model_to_load}_id") }.uniq
-      preloaded_items = if klass_to_load < ApplicationResource
-                          # Class to load must support where(id: [])
-                          klass_to_load.where(id: foreign_ids, per: foreign_ids.count)
-                        elsif klass_to_load < ApplicationRecord
-                          klass_to_load.where(id: foreign_ids)
-                        else
-                          raise "#{klass_to_load} is not from a supported preload type"
-                        end
-      each do |collection_item|
-        corresponding_preloaded = preloaded_items.find do |pit|
-          pit.id == collection_item.send("#{model_to_load}_id")
-        end
-        collection_item.send("#{model_to_load}=", corresponding_preloaded)
-      end
-      self
     end
   end
 end
