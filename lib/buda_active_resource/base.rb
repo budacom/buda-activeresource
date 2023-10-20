@@ -1,5 +1,5 @@
 module BudaActiveResource
-  class Base < ActiveResource::Base
+  class Base < ::ActiveResource::Base
     class << self
       threadsafe_attribute :_buda_site, :_agent_id, :_agent_secret
 

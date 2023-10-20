@@ -6,10 +6,10 @@ module BudaActiveResource
         model_to_load = model_to_load.to_s.singularize
         klass_to_load = Object.const_get model_to_load.classify
         foreign_ids = map { |collection_item| collection_item.send("#{model_to_load}_id") }.uniq
-        preloaded_items = if klass_to_load < ApplicationResource
+        preloaded_items = if klass_to_load < ::ActiveResource::Base
                             # Class to load must support where(id: [])
                             klass_to_load.where(id: foreign_ids, per: foreign_ids.count)
-                          elsif klass_to_load < ApplicationRecord
+                          elsif klass_to_load < ::ActiveRecord::Base
                             klass_to_load.where(id: foreign_ids)
                           else
                             raise "#{klass_to_load} is not from a supported preload type"
