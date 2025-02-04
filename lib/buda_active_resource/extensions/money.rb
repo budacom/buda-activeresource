@@ -15,10 +15,8 @@ module BudaActiveResource
             ::Money.from_amount(amount.to_f, currency) if amount
           end
 
-          define_method "#{field}=" do |new_amount|
-            amount = new_amount.amount
-            currency = new_amount.currency
-            attributes[:amount] = [amount, currency].map(&:to_s)
+          define_method :"#{field}=" do |amount|
+            attributes[field.to_sym] = amount.presence && [amount.amount, amount.currency.iso_code]
           end
         end
       end
