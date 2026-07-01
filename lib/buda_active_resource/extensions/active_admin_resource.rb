@@ -8,14 +8,16 @@ module BudaActiveResource
           find(_id)
         end
 
-        def process_active_admin_collection_query(ransack:, reorder:, page:, per:)
+        def process_active_admin_collection_query(options = {}, **kwargs)
+          options = options.merge(kwargs)
+
           collection = find(
             :all,
             params: {
-              search: ransack,
-              order: reorder,
-              page: page,
-              per: per
+              search: options[:ransack] || {},
+              order: options[:reorder],
+              page: options[:page],
+              per: options[:per]
             }
           )
 
