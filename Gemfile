@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in internal-affairs-gem.gemspec
 gemspec
+
+# Minimum stack to boot specs (Stage 1)
+gem 'rails'
+gem 'active_admin_resource', github: 'budacom/activeadmin_resource'
