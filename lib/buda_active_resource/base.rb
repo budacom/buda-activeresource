@@ -1,5 +1,7 @@
 module BudaActiveResource
   class Base < ::ActiveResource::Base
+    FIND_PER_PAGE = 100
+
     class << self
       threadsafe_attribute :_buda_site, :_agent_id, :_agent_secret
 
@@ -61,6 +63,38 @@ module BudaActiveResource
 
     def self.find_by(arg, *_args)
       find(arg[primary_key])
+    end
+
+    def self.find_each(params = {}, &block) # rubocop:disable Metrics/MethodLength
+      return enum_for(__method__, params) unless block
+
+      page = 1
+
+      loop do
+        result = retry_on_error error_class: Net::ReadTimeout do
+          find(
+            :all, params: {
+              page: page,
+              per: FIND_PER_PAGE
+            }.merge(params)
+          )
+        end
+
+        pagination_info = format.pagination_info
+
+        result.each(&block)
+
+        break if pagination_info['total_pages'] <= page
+
+        page += 1
+      end
+    end
+
+    def self.retry_on_error(retries: 5, error_class: StandardError)
+      retries -= 1
+      yield
+    rescue error_class
+      retry unless retries.negative?
     end
   end
 end
