@@ -7,3 +7,18 @@ Features include:
 - Integration with `Money`
 - Connectiones patch
 - other minor tweaks
+
+## Running specs
+
+Requires Ruby 3.4 (see `.ruby-version`).
+
+```bash
+bundle install
+bundle exec rspec
+```
+
+Or:
+
+```bash
+bin/ci
+```

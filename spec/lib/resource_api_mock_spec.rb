@@ -4,6 +4,7 @@ require 'active_admin_resource/railties/rspec' # Use Resource API Mock
 describe ActiveAdminResource::ResourceApiMock do
   class Zoo
     attr_accessor :id
+
     def initialize(id)
       self.id = id
     end
@@ -22,6 +23,10 @@ describe ActiveAdminResource::ResourceApiMock do
     end
   end
 
+  def record_ids(records)
+    records.map(&:id)
+  end
+
   let(:super_zoo) { Zoo.new(1) }
   let!(:tall_jimmy) do
     Giraffe.create(name: 'Jimmy', zoo_id: super_zoo.id, height: 4.9, color: 'brown')
@@ -32,27 +37,28 @@ describe ActiveAdminResource::ResourceApiMock do
 
   describe 'unfiltered query via #all' do
     it 'finds the created records' do
-      expect(Giraffe.all).to eq([tall_jimmy, small_george])
+      expect(record_ids(Giraffe.all)).to eq([tall_jimmy.id, small_george.id])
     end
   end
 
   describe 'filtered query via #where' do
     it 'gets the corresponding records' do
-      expect(Giraffe.where(color: 'brown')).to eq([tall_jimmy])
-      expect(Giraffe.where(zoo: super_zoo)).to eq([tall_jimmy, small_george])
+      expect(record_ids(Giraffe.where(color: 'brown'))).to eq([tall_jimmy.id])
+      expect(record_ids(Giraffe.where(zoo: super_zoo))).to eq([tall_jimmy.id, small_george.id])
     end
   end
 
   describe 'get single record via #find(<id>)' do
     it 'gets the corresponding record' do
-      expect(Giraffe.find(57)).to eq(small_george)
+      expect(Giraffe.find(57).id).to eq(small_george.id)
     end
   end
 
   describe '#destroy' do
     before { tall_jimmy.destroy }
+
     it "doesn't find the record anymore" do
-      expect(Giraffe.all).to eq([small_george])
+      expect(record_ids(Giraffe.all)).to eq([small_george.id])
     end
   end
 
@@ -61,9 +67,13 @@ describe ActiveAdminResource::ResourceApiMock do
       small_george.color = 'black'
       small_george.save
     end
+
     it 'updates record on store' do
       expect(small_george.reload.color).to eq('black')
-      expect(Giraffe.where(color: 'black')).to eq([small_george])
+      results = Giraffe.where(color: 'black')
+      expect(results.size).to eq(1)
+      expect(results.first.id).to eq(small_george.id)
+      expect(results.first.color).to eq('black')
     end
   end
 end
