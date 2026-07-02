@@ -1,7 +1,8 @@
+require_relative 'lib/buda_active_resource/version'
+
 Gem::Specification.new do |spec|
   spec.name        = 'buda_active_resource'
-  spec.version     = '1.0.0'
-  spec.date        = '2023-03-03'
+  spec.version     = BudaActiveResource::VERSION
   spec.summary     = 'pending'
   spec.description = 'pending'
   spec.authors     = ['devs@buda.com']
